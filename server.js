@@ -5,9 +5,9 @@ let requestCount = 0
 
 // Создаёт сервер
 const server = http.createServer((request, response) => {
-    // Отправляет тектс браузеру
+    // Отправляет текст браузеру
 
-    // В каждом запроче увеличивает значение переменной на еденицу и выводит его
+    // В каждом запросе увеличивает значение переменной на еденицу и выводит его
     requestCount ++
 
     //Будем отслеживать request. Скажем, что если у нас в URL-адресе есть “students”, то запишем в response ‘STUDENTS’,
@@ -21,7 +21,7 @@ const server = http.createServer((request, response) => {
         default:
             response.write('404 not found ')
     }
-
+// Возвращает в браузер 'IT-ROMAN' и переменную увеличенную на еденицу
     response.write('IT-ROMAN ' + requestCount)
     response.end()
 })
