@@ -1,48 +1,37 @@
-// подключаем протокол
 const http = require('http')
-// подключаем файловую систему
-const fs = require('fs')
+// Подключает встроенный модуль http из Node.js.
 
-const delay = (ms) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve()
-        }, ms)
-    })
-}
+let requestCount = 0
 
-const readFile = (path) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path,(err, data) => {
-            if(err) reject(err)
-            else resolve(data)
-        })
-    })
-}
+// Создаёт сервер
+const server = http.createServer((request, response) => {
+    // Отправляет тектс браузеру
 
-//создаем сервер
-const server = http.createServer(async (request, response) => {
+    // В каждом запроче увеличивает значение переменной на еденицу и выводит его
+    requestCount ++
+
+    //Будем отслеживать request. Скажем, что если у нас в URL-адресе есть “students”, то запишем в response ‘STUDENTS’,
     switch (request.url) {
-        case '/about': {
-            try {
-                const data = await readFile('pages/about.html')
-                response.write(data)
-                response.end()
-            } catch (e) {
-                response.write('fucking error')
-                response.end()
-            }
+        case '/students':
+            response.write('STUDENTS ')
             break
-        } case '/home': {
-            await delay(3000)
-            response.write('HOME')
-            response.end()
+        case '/courses':
+            response.write('FRONT+BACK ')
             break
-        } default: {
-            response.write('404/not found')
-            response.end()
-        }
+        default:
+            response.write('404 not found ')
     }
+
+    response.write('IT-ROMAN ' + requestCount)
+    response.end()
 })
-// назначаем порт
-server.listen(3003)
+
+
+
+// Запускает сервер на порту 3003
+server.listen(3003, () => {
+    console.log('Server started on port 3003')
+})
+
+
+
