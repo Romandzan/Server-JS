@@ -1,16 +1,23 @@
 const http = require('http')
 // Подключает встроенный модуль http из Node.js.
 
+
+
 let requestCount = 0
 
 // Создаёт сервер
 const server = http.createServer((request, response) => {
     // Отправляет тектс браузеру
 
-    // В каждом запроче увеличивает значение переменной на еденицу и выводит его
-    requestCount ++
+    console.log(request.url)
 
-    //Будем отслеживать request. Скажем, что если у нас в URL-адресе есть “students”, то запишем в response ‘STUDENTS’,
+    if (request.url === '/favicon.ico') {
+        response.writeHead(204, {'Content-Type': 'image/x-icon'})
+        response.end()
+        return
+    }
+    // Игнорирует запрос на иконку вкладки
+
     switch (request.url) {
         case '/students':
             response.write('STUDENTS ')
@@ -21,14 +28,17 @@ const server = http.createServer((request, response) => {
         default:
             response.write('404 not found ')
     }
+//Будем отслеживать request. Скажем, что если у нас в URL-адресе есть “students”, то запишем в response ‘STUDENTS’
+
+    requestCount ++
+    // В каждом запросе увеличивает значение переменной на еденицу и выводит его
 
     response.write('IT-ROMAN ' + requestCount)
     response.end()
 })
 
-
-
 // Запускает сервер на порту 3003
+
 server.listen(3003, () => {
     console.log('Server started on port 3003')
 })
